@@ -43,13 +43,22 @@ const Player = function(player, field) {
 
     const playerTableSetState = function(){
         for(let [key, value] of Object.entries(_fieldCall.fieldState())){
+            // If value is null set player[key] to null, else to true or false
             value == null ? _playerPov[key] = null : _player == value ? _playerPov[key] = true : _playerPov[key] = false;
         };
     }
 
     const conditions = function(){
-        const condition1 = _playerPov[0]
-        console.log(condition1)
+        let allConditions = {
+            0 : [ _playerPov[0], _playerPov[1], _playerPov[2] ] ,
+            1 : [ _playerPov[3], _playerPov[4], _playerPov[5] ] ,
+            2 : [ _playerPov[6], _playerPov[7], _playerPov[8] ] ,
+            3 : [ _playerPov[0], _playerPov[3], _playerPov[6] ] ,
+            4 : [ _playerPov[1], _playerPov[4], _playerPov[7] ] ,
+            5 : [ _playerPov[2], _playerPov[5], _playerPov[8] ] ,
+            6 : [ _playerPov[0], _playerPov[4], _playerPov[8] ] ,
+            7 : [ _playerPov[2], _playerPov[4], _playerPov[6] ] ,
+        }
     }
 
     return{

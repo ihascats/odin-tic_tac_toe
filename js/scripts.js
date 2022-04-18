@@ -37,8 +37,10 @@ const Player = function(player, field) {
         return _player == 'X' ? true : false
     }
 
-    const move = function(){
-        
+    const move = function(dataValue){
+        field.setField(dataValue, _player);
+        playerTableSetState();
+        conditions().winningCondition();
     }
 
     const playerTableSetState = function(){
@@ -73,7 +75,8 @@ const Player = function(player, field) {
         firstMove, 
         playerTable,
         playerTableSetState,
-        conditions
+        conditions,
+        move
     }
     
 }
@@ -88,11 +91,11 @@ const O = Player('O', field);
         let square = event.target.closest('.square');
         let dataValue = square.getAttribute('data-value');
         if (square==null || claimed.includes(dataValue)) return;
-        
+
 
         claimed.push(dataValue)
         console.log(dataValue, claimed)
-        field.setField(dataValue, 'X')
+        X.move(dataValue);
         
     }
 })();

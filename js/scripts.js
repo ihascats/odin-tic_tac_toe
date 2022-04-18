@@ -21,32 +21,45 @@ const Field = function(){
     const setField = (key, value)=>{
         currentField[key] = value;
     }
+    // Sets player playground ui (temp)
+    const displayField = () => {
+        document.querySelectorAll('.square').forEach(element => {
+            element.textContent = currentField[element.getAttribute('data-value')]
+        })
+    }
 
-    return{setField, fieldState}
+    return{setField, fieldState, displayField}
 }
 
 
 const Player = function(player, field) {
     let _player = player;
     let _fieldCall = field;
-    let _playerPov = new FieldConstructor()
+    let _playerPov = new FieldConstructor();
+    let turn;
 
-    const playerTable = () => _playerPov
+    const playerTable = () => _playerPov;
+
     // Determines if player has the first move or not
     const firstMove = function(){
-        return _player == 'X' ? true : false
+        turn = _player == 'X';
     }
 
     const move = function(dataValue){
-        field.setField(dataValue, _player);
-        playerTableSetState();
-        conditions().winningCondition();
+        if (turn){
+            field.setField(dataValue, _player);
+            playerTableSetState();
+            conditions().winningCondition();
+            turn = !turn
+        } else {
+            turn = !turn
+        }
     }
 
     const playerTableSetState = function(){
         for(let [key, value] of Object.entries(_fieldCall.fieldState())){
             // If value is null set player[key] to null, else to true or false
-            value == null ? _playerPov[key] = null : _player == value ? _playerPov[key] = true : _playerPov[key] = false;
+            value == null ? (_playerPov[key] = null) : _player == value ? (_playerPov[key] = true) : (_playerPov[key] = false);
         };
     }
 
@@ -64,7 +77,7 @@ const Player = function(player, field) {
         const winningCondition = function(){
             for(let value of Object.values(allConditions)){
                 // If it doesn't contain null or false
-                console.log(value)
+                // console.log(value, _player)
                 !value.includes(null) && !value.includes(false) ? console.log('Winner') : null
             };
         }
@@ -86,6 +99,8 @@ const X = Player('X', field);
 const O = Player('O', field);
 
 (function(){
+    X.firstMove();
+    O.firstMove();
     let claimed = []
     window.onclick = (event)=>{
         let square = event.target.closest('.square');
@@ -96,6 +111,7 @@ const O = Player('O', field);
         claimed.push(dataValue)
         console.log(dataValue, claimed)
         X.move(dataValue);
-        
+        O.move(dataValue);
+        field.displayField();
     }
 })();

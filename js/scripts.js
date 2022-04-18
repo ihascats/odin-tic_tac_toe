@@ -43,13 +43,20 @@ const Player = function(player, field) {
 
     const playerTableSetState = function(){
         for(let [key, value] of Object.entries(_fieldCall.fieldState())){
-            _player == value ? _playerPov[key] = true : _playerPov[key] = false;
+            value == null ? _playerPov[key] = null : _player == value ? _playerPov[key] = true : _playerPov[key] = false;
         };
     }
+
+    const conditions = function(){
+        const condition1 = _playerPov[0]
+        console.log(condition1)
+    }
+
     return{
-        firstMove,  
-        playerTable, 
-        playerTableSetState
+        firstMove, 
+        playerTable,
+        playerTableSetState,
+        conditions
     }
     
 }

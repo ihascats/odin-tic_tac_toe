@@ -15,31 +15,40 @@ function FieldConstructor(){
 
 const Field = function(){
     let currentField = new FieldConstructor()
+    const fieldState = () => currentField;
     const setField = (key, value)=>{
         currentField[key] = value;
         console.log(currentField)
     }
-    return{setField}
+    return{setField, fieldState}
 }
 
 
-const Player = function(player) {
-    let _player = player
-    let _fieldState = field
+const Player = function(player, field) {
+    let _player = player;
+    let _fieldCall = field;
+    let _playerPov = new FieldConstructor()
+
     const firstMove = function(){
         return _player == 'X' ? true : false
     }
-    let _playerPov = new FieldConstructor()
+
     const move = function(){
         
     }
-    return{firstMove}
+
+    const conditions = function(){
+        for(let [key, value] of Object.entries(_fieldCall.fieldState())){
+            console.log(key, value);
+        };
+    }
+    return{firstMove, conditions}
     
 }
 
 const field = Field();
-const X = Player('X');
-const O = Player('O');
+const X = Player('X', field);
+const O = Player('O', field);
 
 (function(){
     let claimed = []

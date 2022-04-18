@@ -59,6 +59,14 @@ const Player = function(player, field) {
             6 : [ _playerPov[0], _playerPov[4], _playerPov[8] ] ,
             7 : [ _playerPov[2], _playerPov[4], _playerPov[6] ] ,
         }
+        const winningCondition = function(){
+            for(let value of Object.values(allConditions)){
+                // If it doesn't contain null or false
+                console.log(value)
+                !value.includes(null) && !value.includes(false) ? console.log('Winner') : null
+            };
+        }
+        return {winningCondition}
     }
 
     return{
@@ -80,6 +88,8 @@ const O = Player('O', field);
         let square = event.target.closest('.square');
         let dataValue = square.getAttribute('data-value');
         if (square==null || claimed.includes(dataValue)) return;
+        
+
         claimed.push(dataValue)
         console.log(dataValue, claimed)
         field.setField(dataValue, 'X')

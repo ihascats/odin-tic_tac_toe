@@ -15,11 +15,13 @@ function FieldConstructor(){
 
 const Field = function(){
     let currentField = new FieldConstructor()
+    // Returns current field state
     const fieldState = () => currentField;
+    // Sets field keys and values
     const setField = (key, value)=>{
         currentField[key] = value;
-        console.log(currentField)
     }
+
     return{setField, fieldState}
 }
 
@@ -29,6 +31,8 @@ const Player = function(player, field) {
     let _fieldCall = field;
     let _playerPov = new FieldConstructor()
 
+    const playerTable = () => _playerPov
+    // Determines if player has the first move or not
     const firstMove = function(){
         return _player == 'X' ? true : false
     }
@@ -37,12 +41,17 @@ const Player = function(player, field) {
         
     }
 
-    const conditions = function(){
+    const playerTableSetState = function(){
         for(let [key, value] of Object.entries(_fieldCall.fieldState())){
-            console.log(key, value);
+            _player == value ? _playerPov[key] = true : _playerPov[key] = false;
         };
     }
-    return{firstMove, conditions}
+    return{
+        firstMove, 
+        conditions, 
+        playerTable, 
+        playerTableSetState
+    }
     
 }
 

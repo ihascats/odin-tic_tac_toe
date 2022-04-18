@@ -15,7 +15,7 @@ function FieldConstructor(){
 
 const Field = function(){
     let currentField = new FieldConstructor()
-    let setField = (key, value)=>{
+    const setField = (key, value)=>{
         currentField[key] = value;
         console.log(currentField)
     }
@@ -26,10 +26,14 @@ const Field = function(){
 const Player = function(player) {
     let _player = player
     let _fieldState = field
+    const firstMove = function(){
+        return _player == 'X' ? true : false
+    }
     let _playerPov = new FieldConstructor()
     const move = function(){
         
     }
+    return{firstMove}
     
 }
 

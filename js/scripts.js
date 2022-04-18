@@ -47,8 +47,7 @@ const Player = function(player, field) {
         };
     }
     return{
-        firstMove, 
-        conditions, 
+        firstMove,  
         playerTable, 
         playerTableSetState
     }

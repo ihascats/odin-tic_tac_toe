@@ -65,23 +65,50 @@ const Player = function(player, field) {
 
     const conditions = function(){
         let allConditions = {
-            0 : [ _playerPov[0], _playerPov[1], _playerPov[2] ] ,
-            1 : [ _playerPov[3], _playerPov[4], _playerPov[5] ] ,
-            2 : [ _playerPov[6], _playerPov[7], _playerPov[8] ] ,
-            3 : [ _playerPov[0], _playerPov[3], _playerPov[6] ] ,
-            4 : [ _playerPov[1], _playerPov[4], _playerPov[7] ] ,
-            5 : [ _playerPov[2], _playerPov[5], _playerPov[8] ] ,
-            6 : [ _playerPov[0], _playerPov[4], _playerPov[8] ] ,
-            7 : [ _playerPov[2], _playerPov[4], _playerPov[6] ] ,
+            0 : [ {0:_playerPov[0]}, {1:_playerPov[1]}, {2:_playerPov[2]} ] ,
+            1 : [ {3:_playerPov[3]}, {4:_playerPov[4]}, {5:_playerPov[5]} ] ,
+            2 : [ {6:_playerPov[6]}, {7:_playerPov[7]}, {8:_playerPov[8]} ] ,
+            3 : [ {0:_playerPov[0]}, {3:_playerPov[3]}, {6:_playerPov[6]} ] ,
+            4 : [ {1:_playerPov[1]}, {4:_playerPov[4]}, {7:_playerPov[7]} ] ,
+            5 : [ {2:_playerPov[2]}, {5:_playerPov[5]}, {8:_playerPov[8]} ] ,
+            6 : [ {0:_playerPov[0]}, {4:_playerPov[4]}, {8:_playerPov[8]} ] ,
+            7 : [ {2:_playerPov[2]}, {4:_playerPov[4]}, {6:_playerPov[6]} ] ,
         }
         const winningCondition = function(){
-            for(let value of Object.values(allConditions)){
+            for(let values of Object.values(allConditions)){
+                let objValues = []
+                values.forEach(obj => {
+                    objValues.push(Object.values(obj)[0]);
+                });
                 // If it doesn't contain null or false
                 // console.log(value, _player)
-                !value.includes(null) && !value.includes(false) ? console.log('Winner') : null
+                !objValues.includes(null) && !objValues.includes(false) ? console.log('Winner') : null
+                
             };
         }
-        return {winningCondition}
+        return {winningCondition, allConditions}
+    }
+
+    const cpu = function(array){
+        let round = array.length
+        console.log(round)
+        if (round==0){
+            move(4)
+        }
+        if (round==1){
+            let rand = Math.floor(Math.random() * (4 - 0 + 1) + 0)*2
+            if (rand == 4){
+                rand = 8;
+            }
+            move(rand);
+        }
+        for(let values of Object.values(conditions().allConditions)){
+            values.forEach(obj => {
+                console.log(obj)
+            });
+            
+        };
+        
     }
 
     return{
@@ -89,7 +116,8 @@ const Player = function(player, field) {
         playerTable,
         playerTableSetState,
         conditions,
-        move
+        move,
+        cpu
     }
     
 }
@@ -112,6 +140,8 @@ const O = Player('O', field);
         console.log(dataValue, claimed)
         X.move(dataValue);
         O.move(dataValue);
+        O.cpu(claimed);
+        X.move(dataValue);
         field.displayField();
     }
 })();

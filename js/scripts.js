@@ -81,7 +81,6 @@ const Player = function(player, field) {
                     objValues.push(Object.values(obj)[0]);
                 });
                 // If it doesn't contain null or false
-                // console.log(value, _player)
                 !objValues.includes(null) && !objValues.includes(false) ? console.log('Winner') : null
                 
             };
@@ -93,7 +92,6 @@ const Player = function(player, field) {
         let round = selected.length
         let check0 = true;
         let check1 = false;
-        console.log(round)
         playerTableSetState()
         if (round==0){
             move(4)
@@ -114,6 +112,14 @@ const Player = function(player, field) {
                 }
                 move(rand);
                 selected.push(rand);
+                check0=false
+                return
+            }
+        }
+        if (round==3){
+            if(Object.values(playerTable())[4]==true&&Object.values(playerTable())[6]==false&&Object.values(playerTable())[2]==false){
+                move(1);
+                selected.push(1);
                 check0=false
                 return
             }
@@ -209,11 +215,11 @@ const O = Player('O', field);
 
 
         claimed.push(dataValue);
-        console.log(dataValue, claimed)
         X.move(dataValue);
         O.move(dataValue);
         O.cpu(claimed);
         X.move(dataValue);
+        console.log(claimed.length)
         field.displayField();
     }
 })();

@@ -26,11 +26,9 @@ const Field = function(){
         Object.keys(currentField).forEach(element =>{
             currentField[element] = null;
         });
-        console.log(currentField)
     };
     // Sets player playground ui (temp)
     const displayField = () => {
-        console.log('here!')
         document.querySelectorAll('.square').forEach(element => {
             if (currentField[element.getAttribute('data-value')]!=null && element.childNodes.length == 0){
                 let img = document.createElement('img');
@@ -190,15 +188,16 @@ const UserInput = function() {
         gameButtonReset();
         button.classList.add('target');
         button.disabled = true;
+        const field = Field();
         if (button.textContent=='START'){
             // start game code here...
             let squares = document.querySelectorAll('.square');
             squares.forEach(square => square.classList.add('emptySquare'));
-            const play = PlayerVsPlayer();
+            const play = PlayerVsPlayer(field);
             play.play();
         }
         if (button.textContent=='RESET'){
-
+            field.displayField();
             // reset left-input here...
 
             // reset gameControls (self)
@@ -233,8 +232,7 @@ const UserInput = function() {
     return{shapeSelector, playerSelector, gameControls}
 }
 
-const PlayerVsPlayer = function(){
-    const field = Field();
+const PlayerVsPlayer = function(field){
     const X = Player('X', field);
     const O = Player('O', field);
     X.firstMove();
@@ -266,20 +264,4 @@ const input = UserInput();
     secondPlayer.forEach(button => button.addEventListener('click', ()=>input.playerSelector(button)));
     let gameControls = document.querySelectorAll('.game-controls>button');
     gameControls.forEach(button => button.addEventListener('click', ()=>input.gameControls(button)));
-    // X.firstMove();
-    // O.firstMove();
-    // let claimed = []
-    // window.onclick = (event)=>{
-    //     let square = event.target.closest('.square');
-    //     let dataValue = square.getAttribute('data-value');
-    //     if (square==null || claimed.includes(dataValue)) return;
-
-
-    //     claimed.push(dataValue);
-    //     X.move(dataValue);
-    //     O.move(dataValue);
-    //     console.log(claimed.length)
-    //     field.displayField();
-    // }
-    
 })();

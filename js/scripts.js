@@ -24,7 +24,22 @@ const Field = function(){
     // Sets player playground ui (temp)
     const displayField = () => {
         document.querySelectorAll('.square').forEach(element => {
-            element.textContent = currentField[element.getAttribute('data-value')]
+            if (currentField[element.getAttribute('data-value')]!=null && element.childNodes.length == 0){
+                let img = document.createElement('img');
+                if (currentField[element.getAttribute('data-value')]=='X'){
+                    img.setAttribute('src', './img/close.png');
+                    img.setAttribute('width', '68px');
+                }
+                if (currentField[element.getAttribute('data-value')]=='O'){
+                    img.setAttribute('src', './img/checkbox-blank-circle-outline.png')
+                    img.setAttribute('width', '56px');
+                }
+                element.appendChild(img);
+            }
+
+            if (element.childNodes.length != 0){
+                element.classList.remove('emptySquare')
+            }
         })
     }
 
@@ -81,16 +96,16 @@ const Player = function(player, field) {
                     objValues.push(Object.values(obj)[0]);
                 });
                 // If it doesn't contain null or false
-                !objValues.includes(null) && !objValues.includes(false) ? console.log('Winner') : null
+                if (!objValues.includes(null) && !objValues.includes(false)){
+                    let squares = document.querySelectorAll('.square');
+                    squares.forEach(square => {
+                        square.classList.remove('emptySquare');
+                    });
+                }
                 
             };
         }
         return {winningCondition, allConditions}
-    }
-
-    const cpu = function(selected){
-        
-        
     }
 
     return{
@@ -98,30 +113,133 @@ const Player = function(player, field) {
         playerTable,
         playerTableSetState,
         conditions,
-        move,
-        cpu
+        move
     }
     
 }
 
+const UserInput = function() {
+    const shapeSelector = function(button) {
+        let unhide = document.querySelector('.p2');
+        unhide.classList.remove('hide');
+        let buttons = document.querySelectorAll('.shape>button');
+        buttons.forEach(button => {
+            button.classList.remove('target');
+            button.disabled = false;
+        });
+        button.classList.add('target');
+        button.disabled = true;
+    }
+    const playerSelector = function(button) {
+        let unhide = document.querySelector('.game-controls');
+        unhide.classList.remove('hide');
+        let buttons = document.querySelectorAll('.player2-choice>button');
+        buttons.forEach(button => {
+            button.classList.remove('target');
+            button.disabled = false;
+        });
+        button.classList.add('target');
+        button.disabled = true;
+        if (button.textContent == 'PC'){
+            let div = document.createElement('div');
+            let label = document.createElement('label');
+            let input = document.createElement('input');
+            div.appendChild(label);
+            div.appendChild(input);
+            // div
+            div.style = 'display:grid; gap: 8px;'
+            div.classList.add('mark');
+            // label
+            label.textContent = 'PLAYER_2 NAME:';
+            label.setAttribute('for', 'player2');
+
+            // input
+            input.style = 'width: -webkit-fill-available;';
+            input.setAttribute('type','text');
+            input.setAttribute('name', 'player2');
+            input.setAttribute('id','player2');
+
+            button.parentElement.parentElement.appendChild(div);
+        }
+        if (button.textContent == 'CPU'){
+            button.parentElement.parentElement.removeChild(button.parentElement.parentElement.lastChild)
+        }
+    }
+    const gameControls = function(button) {
+        let buttons = document.querySelectorAll('.game-controls>button');
+        let gameButtonReset = function(){
+            buttons.forEach(button => {
+                button.classList.remove('target');
+                button.disabled = false;
+            });
+        }
+        gameButtonReset();
+        button.classList.add('target');
+        button.disabled = true;
+        if (button.textContent=='START'){
+            // start game code here...
+        }
+        if (button.textContent=='RESET'){
+            
+            // reset left-input here...
+
+            // reset gameControls (self)
+            gameButtonReset();
+            button.parentElement.classList.add('hide');
+
+            // reset playerSelector
+            let p2 = document.querySelector('.p2');
+            if (p2.lastChild.classList.contains('mark')){
+                p2.removeChild(p2.lastChild);
+            }
+            let playerButtons = document.querySelectorAll('.player2-choice>button');
+            playerButtons.forEach(button => {
+                button.classList.remove('target');
+                button.disabled = false;
+            });
+            p2.classList.add('hide');
+
+            // reset shapeSelector
+            let shapeButtons = document.querySelectorAll('.shape>button');
+            shapeButtons.forEach(button => {
+                button.classList.remove('target');
+                button.disabled = false;
+            });
+            let player1 = document.querySelector('#player1');
+            player1.value = '';
+
+            // reset game here...
+
+        }
+    }
+    return{shapeSelector, playerSelector, gameControls}
+}
+const input = UserInput();
 const field = Field();
 const X = Player('X', field);
 const O = Player('O', field);
 
 (function(){
-    X.firstMove();
-    O.firstMove();
-    let claimed = []
-    window.onclick = (event)=>{
-        let square = event.target.closest('.square');
-        let dataValue = square.getAttribute('data-value');
-        if (square==null || claimed.includes(dataValue)) return;
+    let shapes = document.querySelectorAll('.shape>button');
+    shapes.forEach(button => button.addEventListener('click', ()=>input.shapeSelector(button)));
+    let secondPlayer = document.querySelectorAll('.player2-choice>button');
+    secondPlayer.forEach(button => button.addEventListener('click', ()=>input.playerSelector(button)));
+    let gameControls = document.querySelectorAll('.game-controls>button');
+    gameControls.forEach(button => button.addEventListener('click', ()=>input.gameControls(button)));
+    // X.firstMove();
+    // O.firstMove();
+    // let claimed = []
+    // window.onclick = (event)=>{
+    //     let square = event.target.closest('.square');
+    //     let dataValue = square.getAttribute('data-value');
+    //     if (square==null || claimed.includes(dataValue)) return;
 
 
-        claimed.push(dataValue);
-        X.move(dataValue);
-        O.move(dataValue);
-        console.log(claimed.length)
-        field.displayField();
-    }
+    //     claimed.push(dataValue);
+    //     X.move(dataValue);
+    //     O.move(dataValue);
+    //     console.log(claimed.length)
+    //     field.displayField();
+    // }
+    
 })();

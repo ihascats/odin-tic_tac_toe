@@ -1,21 +1,34 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 body {
     display: grid;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 20% 1fr;
+}
+
+.wrapper {
+    display: grid;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    background-color: rgb(238, 252, 206);
 }
 
 .playingField {
-    width: 300px;
-    height: 300px;
+    width: 610px;
+    height: 610px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20px, 100px));
-    border: 1px solid black;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 200px));
+    /* border: 1px solid black; */
+    gap: 2px;
 }
 
 .playingField > div {
@@ -23,8 +36,174 @@ body {
     max-width: 298px;
     min-height: 18px;
     max-height: 298px;
-    border: 1px solid black;
+    background-color: rgb(113, 146, 94);
     display: grid;
     justify-content: center;
     align-items: center;
+}
+
+.square > img {
+    margin: -32px;
+}
+
+.emptySquare:hover{
+    background-color: rgb(71, 100, 64);
+}
+
+.emptySquare:active{
+    background-color: rgb(109, 155, 98);
+}
+
+.left {
+    display: grid;
+    background-color: rgb(217, 255, 168);
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.75);
+    clip-path: inset(0px -15px 0px 0px);
+    min-width: 336px;
+    align-content: space-between;
+}
+
+.left > div {
+    display: grid;
+    gap: 42px;
+    height: fit-content;
+}
+
+.player1-input{
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(auto, 1fr));
+    gap: 16px;
+}
+
+input{
+    border: none;
+    padding: 8px;
+    border-radius: 2px;
+    background-color: rgb(169, 204, 88);
+    box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.1);
+}
+
+label{
+    letter-spacing: 2px;
+    font-weight: 900;
+    font-size: 12px;
+    color: rgb(100, 100, 100);
+}
+h1 {
+    letter-spacing: 2px;
+    font-weight: 900;
+    color: rgb(56, 56, 56);
+    text-align: center;
+}
+.left-input{
+    display: grid;
+    gap: 32px;
+}
+.left-input > .p1 {
+    display: grid;
+    gap: 32px;
+    border: 1px solid rgb(109, 155, 98);
+    border-radius: 4px;
+    padding: 16px;;
+    box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.1);
+
+}
+.left-input > .p2 {
+    display: grid;
+    gap: 16px;
+    border: 1px solid rgb(109, 155, 98);
+    border-radius: 4px;
+    padding: 16px;;
+    box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.1);
+
+}
+.shape{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+.shape > button {
+    width: 64px;
+    height: 64px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(224, 97, 97);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.shape > button:hover, .player2-choice > button:hover, .game-controls > button:hover{
+    background-color: rgb(145, 175, 75);
+}
+.shape > button:active, .player2-choice > button:active, .game-controls > button:active {
+    background-color: rgb(186, 224, 97);
+}
+.target{
+    background-color: rgb(169, 204, 88) !important;
+    box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.1);
+    color: rgb(56, 56, 56) !important;
+}
+.shape > button:first-child > img{
+    height: 64px;
+    width: 64px;
+    margin: -16px;
+}
+.player2-choice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+
+.player2-choice > button {
+    width: 128px;
+    height: 64px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(224, 97, 97);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: rgb(37, 37, 37);
+}
+.hide {
+    display: none !important;
+}
+footer{
+    text-align: center;
+    color: rgb(56, 56, 56);
+    letter-spacing: 2px;
+}
+a {
+    color: rgb(56, 56, 56);
+}
+.git {
+    height: 24px;
+    width: 24px;
+    margin-bottom: -7px;
+}
+.game-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    gap: 16px;
+    border: 1px solid rgb(109, 155, 98);
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 8px 8px 0px 0px rgb(0 0 0 / 10%);
+}
+.game-controls > button {
+    width: 128px;
+    height: 64px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgb(224, 97, 97);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: rgb(37, 37, 37);
 }

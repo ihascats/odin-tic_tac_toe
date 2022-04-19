@@ -89,103 +89,7 @@ const Player = function(player, field) {
     }
 
     const cpu = function(selected){
-        let round = selected.length
-        let check0 = true;
-        let check1 = false;
-        playerTableSetState()
-        if (round==0){
-            move(4)
-            selected.push('4');
-            check0=false
-            return
-        }
-        if (round==1){
-            if(Object.values(playerTable())[4]==null){
-                move(4)
-                selected.push('4');
-                check0=false
-                return
-            } else {
-                let rand = Math.floor(Math.random() * (4 - 0 + 1) + 0)*2
-                if (rand == 4){
-                    rand = 8;
-                }
-                move(rand);
-                selected.push(rand);
-                check0=false
-                return
-            }
-        }
-        if (round==3){
-            if(Object.values(playerTable())[4]==true&&Object.values(playerTable())[6]==false&&Object.values(playerTable())[2]==false){
-                move(1);
-                selected.push(1);
-                check0=false
-                return
-            }
-        }
-        if(check0){
-            for(let values of Object.values(conditions().allConditions)){
-                let array = [];
-                let trueCount = 0;
-                let falseCount = 0;
-                let nullCount = 0;
-
-                // values is 3 objects
-                // depending on the value of the object increase corresponding count
-                values.forEach(obj => {
-                    let value = Object.values(obj)[0]
-                    array.push(obj)
-                    if (value){
-                        trueCount++
-                    }
-                    if (value == false){
-                        falseCount++
-                    }
-                    if (value == null){
-                        nullCount++
-                    }
-                });
-                // if 2 fields are true and theres an empty field
-                // fill empty field
-                if (trueCount==2 && nullCount == 1){
-                    let pos;
-                    array.forEach(obj => {
-                        if (Object.values(obj)[0]==null){
-                            pos = Object.keys(obj)[0];
-                        }
-                    })
-                    move(pos);
-                    selected.push(pos);
-                    return
-                }
-                // if 2 fields are false and an empty field (enemy about to win)
-                // fill the empty field
-                if (falseCount==2 && nullCount == 1){
-                    let pos;
-                    array.forEach(obj => {
-                        if (Object.values(obj)[0]==null){
-                            pos = Object.keys(obj)[0];
-                        }
-                    })
-                    move(pos);
-                    selected.push(pos);
-                    return
-                } 
-                check1=true;
-            };
-        }
-        if(check1){
-            for(let values of Object.values(conditions().allConditions)){
-                for (let obj of values){
-                    if (Object.values(obj)[0]==null){
-                        move(Object.keys(obj)[0])
-                        return
-                    }
-                }
-            
-            }
-        }
+        
         
     }
 
@@ -217,8 +121,6 @@ const O = Player('O', field);
         claimed.push(dataValue);
         X.move(dataValue);
         O.move(dataValue);
-        O.cpu(claimed);
-        X.move(dataValue);
         console.log(claimed.length)
         field.displayField();
     }

@@ -21,8 +21,16 @@ const Field = function(){
     const setField = (key, value)=>{
         currentField[key] = value;
     }
+    // Reset field
+    const fieldReset = () => {
+        Object.keys(currentField).forEach(element =>{
+            currentField[element] = null;
+        });
+        console.log(currentField)
+    };
     // Sets player playground ui (temp)
     const displayField = () => {
+        console.log('here!')
         document.querySelectorAll('.square').forEach(element => {
             if (currentField[element.getAttribute('data-value')]!=null && element.childNodes.length == 0){
                 let img = document.createElement('img');
@@ -36,6 +44,9 @@ const Field = function(){
                 }
                 element.appendChild(img);
             }
+            if (currentField[element.getAttribute('data-value')]==null && element.childNodes.length != 0){
+                element.lastElementChild.remove(element.lastElementChild);
+            }
 
             if (element.childNodes.length != 0){
                 element.classList.remove('emptySquare')
@@ -43,7 +54,7 @@ const Field = function(){
         })
     }
 
-    return{setField, fieldState, displayField}
+    return{setField, fieldState, displayField, fieldReset}
 }
 
 
@@ -101,6 +112,7 @@ const Player = function(player, field) {
                     squares.forEach(square => {
                         square.classList.remove('emptySquare');
                     });
+                    return true;
                 }
                 
             };
@@ -180,6 +192,10 @@ const UserInput = function() {
         button.disabled = true;
         if (button.textContent=='START'){
             // start game code here...
+            let squares = document.querySelectorAll('.square');
+            squares.forEach(square => square.classList.add('emptySquare'));
+            const play = PlayerVsPlayer();
+            play.play();
         }
         if (button.textContent=='RESET'){
 
@@ -216,10 +232,32 @@ const UserInput = function() {
     }
     return{shapeSelector, playerSelector, gameControls}
 }
+
+const PlayerVsPlayer = function(){
+    const field = Field();
+    const X = Player('X', field);
+    const O = Player('O', field);
+    X.firstMove();
+    O.firstMove();
+
+    const play = function(){
+        const playField = document.querySelector('.playingField');
+        field.displayField();
+        playField.onclick = function(event){
+            let square = event.target.closest('.square');
+            if (!square) return
+            X.move(square.getAttribute('data-value'));
+            O.move(square.getAttribute('data-value'));
+            field.displayField();
+            if (X.conditions().winningCondition() || O.conditions().winningCondition()){
+                playField.onclick = null;
+                field.fieldReset();
+            }
+        }
+    }
+    return {play}
+}
 const input = UserInput();
-const field = Field();
-const X = Player('X', field);
-const O = Player('O', field);
 
 (function(){
     let shapes = document.querySelectorAll('.shape>button');

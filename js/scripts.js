@@ -162,7 +162,9 @@ const UserInput = function() {
             button.parentElement.parentElement.appendChild(div);
         }
         if (button.textContent == 'CPU'){
-            button.parentElement.parentElement.removeChild(button.parentElement.parentElement.lastChild)
+            if (button.parentElement.parentElement.lastElementChild.classList.contains('mark')){
+                button.parentElement.parentElement.removeChild(button.parentElement.parentElement.lastChild);
+            }
         }
     }
     const gameControls = function(button) {
@@ -180,7 +182,7 @@ const UserInput = function() {
             // start game code here...
         }
         if (button.textContent=='RESET'){
-            
+
             // reset left-input here...
 
             // reset gameControls (self)
@@ -189,7 +191,7 @@ const UserInput = function() {
 
             // reset playerSelector
             let p2 = document.querySelector('.p2');
-            if (p2.lastChild.classList.contains('mark')){
+            if (p2.lastElementChild.classList.contains('mark')){
                 p2.removeChild(p2.lastChild);
             }
             let playerButtons = document.querySelectorAll('.player2-choice>button');

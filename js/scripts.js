@@ -206,6 +206,8 @@ const UserInput = function() {
             document.querySelectorAll('input').forEach(element => {
                 element.disabled = true;
             });
+            resultDisplay = document.querySelector('.result');
+            resultDisplay.classList.add('hide');
 
             // start pvp game
             if (document.querySelector('.player2-choice').firstElementChild.classList.contains('target')){
@@ -294,7 +296,9 @@ const PlayerVsPlayer = function(field){
             if ((winningPlayer = playerOne.conditions().winningCondition()) || (winningPlayer = playerTwo.conditions().winningCondition())){
                 playField.onclick = null;
                 field.fieldReset();
-                console.log(winningPlayer.playerName());
+                result = document.querySelector('.result>h3');
+                result.textContent = 'WINNER IS '+ winningPlayer.playerName()+'!';
+                result.parentElement.classList.remove('hide');
             };
         }
     }

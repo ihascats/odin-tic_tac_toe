@@ -342,6 +342,7 @@ const PlayerVsComputer = function(field){
             let square = event.target.closest('.square');
             if (!square || !square.classList.contains("emptySquare")) return
             playerOne.move(square.getAttribute('data-value'));
+            cpu.computerMove().turn = true;
             cpu.computerMove();
             playerOne.move().turn = true;
             field.displayField();
@@ -355,7 +356,7 @@ const ComputerPlayer = function(shape, field){
     let _name = 'Albert';
     let _shape = shape;
     let _field = field;
-    let turn;
+    let turn = true;
     
     const name = ()=>_name;
 
@@ -377,6 +378,7 @@ const ComputerPlayer = function(shape, field){
             turn = !turn;
         }
         turn = !turn;
+        return {turn}
     }
     return {computerMove, name, firstMove}
 }

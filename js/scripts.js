@@ -195,7 +195,18 @@ const UserInput = function() {
         const field = Field();
         if (button.textContent=='START'){
             // start game code here...
-            
+            let playerButtons = document.querySelectorAll('.player2-choice>button');
+            playerButtons.forEach(button => {
+                button.disabled = true;
+            });
+            let shapeButtons = document.querySelectorAll('.shape>button');
+            shapeButtons.forEach(button => {
+                button.disabled = true;
+            });
+            document.querySelectorAll('input').forEach(element => {
+                element.disabled = true;
+            });
+
             // start pvp game
             if (document.querySelector('.player2-choice').firstElementChild.classList.contains('target')){
                 let squares = document.querySelectorAll('.square');
@@ -211,7 +222,9 @@ const UserInput = function() {
         if (button.textContent=='RESET'){
             field.displayField();
             // reset left-input here...
-
+            document.querySelectorAll('input').forEach(element => {
+                element.disabled = false;
+            });
             // reset gameControls (self)
             gameButtonReset();
             button.parentElement.classList.add('hide');

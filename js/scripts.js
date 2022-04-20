@@ -56,22 +56,25 @@ const Field = function(){
 }
 
 
-const Player = function(player, field) {
+const Player = function(player, shape, field) {
     let _player = player;
+    let _shape = shape
     let _fieldCall = field;
     let _playerPov = new FieldConstructor();
     let turn;
+
+    const playerName = () => _player;
 
     const playerTable = () => _playerPov;
 
     // Determines if player has the first move or not
     const firstMove = function(){
-        turn = _player == 'X';
+        turn = _shape == 'X';
     }
 
     const move = function(dataValue){
         if (turn){
-            field.setField(dataValue, _player);
+            field.setField(dataValue, _shape);
             playerTableSetState();
             conditions().winningCondition();
             turn = !turn
@@ -83,7 +86,7 @@ const Player = function(player, field) {
     const playerTableSetState = function(){
         for(let [key, value] of Object.entries(_fieldCall.fieldState())){
             // If value is null set player[key] to null, else to true or false
-            value == null ? (_playerPov[key] = null) : _player == value ? (_playerPov[key] = true) : (_playerPov[key] = false);
+            value == null ? (_playerPov[key] = null) : _shape == value ? (_playerPov[key] = true) : (_playerPov[key] = false);
         };
     }
 
@@ -123,7 +126,8 @@ const Player = function(player, field) {
         playerTable,
         playerTableSetState,
         conditions,
-        move
+        move,
+        playerName
     }
     
 }
@@ -233,8 +237,16 @@ const UserInput = function() {
 }
 
 const PlayerVsPlayer = function(field){
-    const X = Player('X', field);
-    const O = Player('O', field);
+    let name1 = document.querySelector('#player1').value;
+    let name2 = document.querySelector('#player2').value;
+    if (name1 == ''){
+        name1 = 'Player 1'
+    }
+    if (name2 == ''){
+        name2 = 'Player 2'
+    }
+    const X = Player(name1, 'X', field);
+    const O = Player(name2, 'O', field);
     X.firstMove();
     O.firstMove();
 

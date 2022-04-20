@@ -113,7 +113,7 @@ const Player = function(player, shape, field) {
                     squares.forEach(square => {
                         square.classList.remove('emptySquare');
                     });
-                    return true;
+                    return {winCon: true, playerName};
                 }
                 
             };
@@ -195,10 +195,18 @@ const UserInput = function() {
         const field = Field();
         if (button.textContent=='START'){
             // start game code here...
-            let squares = document.querySelectorAll('.square');
-            squares.forEach(square => square.classList.add('emptySquare'));
-            const play = PlayerVsPlayer(field);
-            play.play();
+            
+            // start pvp game
+            if (document.querySelector('.player2-choice').firstElementChild.classList.contains('target')){
+                let squares = document.querySelectorAll('.square');
+                squares.forEach(square => square.classList.add('emptySquare'));
+                const play = PlayerVsPlayer(field);
+                play.play();
+            }
+            // start pvc game
+            if (document.querySelector('.player2-choice').lastElementChild.classList.contains('target')){
+                // code here..
+            }
         }
         if (button.textContent=='RESET'){
             field.displayField();
@@ -245,8 +253,18 @@ const PlayerVsPlayer = function(field){
     if (name2 == ''){
         name2 = 'Player 2'
     }
-    const X = Player(name1, 'X', field);
-    const O = Player(name2, 'O', field);
+    let shapePick = document.querySelectorAll('.shape>button');
+    let p1Shape;
+    let p2Shape;
+    shapePick.forEach(button => {
+        if (button.classList.contains('target')){
+            p1Shape = button.id;
+        } else {
+            p2Shape = button.id;
+        }
+    })
+    const X = Player(name1, p1Shape, field);
+    const O = Player(name2, p2Shape, field);
     X.firstMove();
     O.firstMove();
 
@@ -259,10 +277,12 @@ const PlayerVsPlayer = function(field){
             X.move(square.getAttribute('data-value'));
             O.move(square.getAttribute('data-value'));
             field.displayField();
-            if (X.conditions().winningCondition() || O.conditions().winningCondition()){
+            let winningPlayer;
+            if ((winningPlayer = X.conditions().winningCondition()) || (winningPlayer = O.conditions().winningCondition())){
                 playField.onclick = null;
                 field.fieldReset();
-            }
+                console.log(winningPlayer.playerName());
+            };
         }
     }
     return {play}

@@ -61,7 +61,7 @@ const Player = function(player, shape, field) {
     let _shape = shape
     let _fieldCall = field;
     let _playerPov = new FieldConstructor();
-    let turn;
+    let turn = true;
 
     const playerName = () => _player;
 
@@ -81,6 +81,7 @@ const Player = function(player, shape, field) {
         } else {
             turn = !turn
         }
+        return {turn}
     }
 
     const playerTableSetState = function(){
@@ -219,6 +220,10 @@ const UserInput = function() {
             // start pvc game
             if (document.querySelector('.player2-choice').lastElementChild.classList.contains('target')){
                 // code here..
+                let squares = document.querySelectorAll('.square');
+                squares.forEach(square => square.classList.add('emptySquare'));
+                const playComputer = PlayerVsComputer(field);
+                playComputer.play();
             }
         }
         if (button.textContent=='RESET'){
@@ -308,6 +313,74 @@ const PlayerVsPlayer = function(field){
     }
     return {play}
 }
+const PlayerVsComputer = function(field){
+    let name1 = document.querySelector('#player1').value;
+    if (name1 == ''){
+        name1 = 'Player 1'
+    }
+    let shapePick = document.querySelectorAll('.shape>button');
+    let p1Shape;
+    let p2Shape;
+    shapePick.forEach(button => {
+        if (button.classList.contains('target')){
+            p1Shape = button.id;
+        } else {
+            p2Shape = button.id;
+        }
+    });
+    const playerOne = Player(name1, p1Shape, field);
+    const cpu = ComputerPlayer(p2Shape, field);
+    
+    
+    const play = function(){
+        const playField = document.querySelector('.playingField');
+        if (cpu.firstMove()){
+            cpu.computerMove();
+        }
+        field.displayField();
+        playField.onclick = function(event){
+            let square = event.target.closest('.square');
+            if (!square || !square.classList.contains("emptySquare")) return
+            playerOne.move(square.getAttribute('data-value'));
+            cpu.computerMove();
+            playerOne.move().turn = true;
+            field.displayField();
+
+        }
+    }
+    return {play}
+}
+
+const ComputerPlayer = function(shape, field){
+    let _name = 'Albert';
+    let _shape = shape;
+    let _field = field;
+    let turn;
+    
+    const name = ()=>_name;
+
+    const firstMove = function(){
+        turn = _shape == 'X';
+        return turn;
+    }
+
+    const computerMove = function(){
+        if (turn){
+            // if middle square is empty fill it
+            if (_field.fieldState()[4]==null){
+                _field.fieldState()[4] = _shape;
+            }
+            if (true){}
+
+
+
+            turn = !turn;
+        }
+        turn = !turn;
+    }
+    return {computerMove, name, firstMove}
+}
+
 const input = UserInput();
 
 (function(){

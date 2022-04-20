@@ -299,7 +299,11 @@ const PlayerVsPlayer = function(field){
                 result = document.querySelector('.result>h3');
                 result.textContent = 'WINNER IS '+ winningPlayer.playerName()+'!';
                 result.parentElement.classList.remove('hide');
-            };
+            } else if (!Object.values(field.fieldState()).includes(null)){
+                result = document.querySelector('.result>h3');
+                result.textContent = "IT'S A DRAW!";
+                result.parentElement.classList.remove('hide');
+            }
         }
     }
     return {play}

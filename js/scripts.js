@@ -263,22 +263,22 @@ const PlayerVsPlayer = function(field){
             p2Shape = button.id;
         }
     })
-    const X = Player(name1, p1Shape, field);
-    const O = Player(name2, p2Shape, field);
-    X.firstMove();
-    O.firstMove();
+    const playerOne = Player(name1, p1Shape, field);
+    const playerTwo = Player(name2, p2Shape, field);
+    playerOne.firstMove();
+    playerTwo.firstMove();
 
     const play = function(){
         const playField = document.querySelector('.playingField');
         field.displayField();
         playField.onclick = function(event){
             let square = event.target.closest('.square');
-            if (!square) return
-            X.move(square.getAttribute('data-value'));
-            O.move(square.getAttribute('data-value'));
+            if (!square || !square.classList.contains("emptySquare")) return
+            playerOne.move(square.getAttribute('data-value'));
+            playerTwo.move(square.getAttribute('data-value'));
             field.displayField();
             let winningPlayer;
-            if ((winningPlayer = X.conditions().winningCondition()) || (winningPlayer = O.conditions().winningCondition())){
+            if ((winningPlayer = playerOne.conditions().winningCondition()) || (winningPlayer = playerTwo.conditions().winningCondition())){
                 playField.onclick = null;
                 field.fieldReset();
                 console.log(winningPlayer.playerName());

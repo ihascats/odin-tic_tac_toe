@@ -119,7 +119,24 @@ const Player = function(player, shape, field) {
                 
             };
         }
-        return {winningCondition, allConditions}
+        const losingCondition = function(playerName){
+            for(let values of Object.values(allConditions)){
+                let objValues = []
+                values.forEach(obj => {
+                    objValues.push(Object.values(obj)[0]);
+                });
+                // If it doesn't contain null or false
+                if (!objValues.includes(null) && !objValues.includes(true)){
+                    let squares = document.querySelectorAll('.square');
+                    squares.forEach(square => {
+                        square.classList.remove('emptySquare');
+                    });
+                    return {lossCon: true, playerName};
+                }
+                
+            };
+        }
+        return {winningCondition, allConditions, losingCondition}
     }
 
     return{
@@ -346,6 +363,20 @@ const PlayerVsComputer = function(field){
             cpu.computerMove();
             field.displayField();
             playerOne.move().turn = true;
+            playerOne.playerTableSetState();
+            let winner;
+            if ((winner = playerOne.conditions().winningCondition()) || (winner = playerOne.conditions().losingCondition(cpu.name()))) {
+                playField.onclick = null;
+                field.fieldReset();
+                result = document.querySelector('.result>h3');
+                result.textContent = 'WINNER IS '+ winner.playerName+'!';
+                result.parentElement.classList.remove('hide');
+            } else if (!Object.values(field.fieldState()).includes(null)){
+                result = document.querySelector('.result>h3');
+                result.textContent = "IT'S A DRAW!";
+                result.parentElement.classList.remove('hide');
+            
+            }
 
         }
     }

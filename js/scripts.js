@@ -329,7 +329,7 @@ const PlayerVsComputer = function(field){
         }
     });
     const playerOne = Player(name1, p1Shape, field);
-    const cpu = ComputerPlayer(p2Shape, field);
+    const cpu = ComputerPlayer(p2Shape, field, playerOne);
     
     
     const play = function(){
@@ -344,15 +344,15 @@ const PlayerVsComputer = function(field){
             playerOne.move(square.getAttribute('data-value'));
             cpu.computerMove().turn = true;
             cpu.computerMove();
-            playerOne.move().turn = true;
             field.displayField();
+            playerOne.move().turn = true;
 
         }
     }
     return {play}
 }
 
-const ComputerPlayer = function(shape, field){
+const ComputerPlayer = function(shape, field, enemy){
     let _name = 'Albert';
     let _shape = shape;
     let _field = field;
@@ -370,12 +370,96 @@ const ComputerPlayer = function(shape, field){
             // if middle square is empty fill it
             if (_field.fieldState()[4]==null){
                 _field.fieldState()[4] = _shape;
+                turn = !turn;
+                return {turn}
+            } else {
+                let win=null;
+                let loss=null;
+                // console.log(enemy.conditions().allConditions[0])
+                let conditions = enemy.conditions().allConditions;
+                for (let key of Object.keys(conditions)){
+                    let values = Object.values(conditions)[key]
+                    let falseCon = {fal: 0}
+                    let trueCon = {tru: 0}
+                    let nullCon = {
+                        nul: 0,
+                        pos: null
+                    }
+                    values.forEach(item => {
+                        if (Object.values(item)[0]===false){
+                            falseCon.fal += 1;
+                        }
+                        if (Object.values(item)[0]===true){
+                            trueCon.tru += 1;
+                        }
+                        if (Object.values(item)[0]===null){
+                            nullCon.nul += 1;
+                            nullCon.pos = Object.keys(item)[0]
+                        }
+                    })
+                    // console.log(`False ${falseCon.fal}, True ${trueCon.tru}, Null ${nullCon.nul}`)
+                    if (falseCon.fal == 2 && nullCon.nul == 1){
+                        win = nullCon.pos;
+                        
+                    } else if (trueCon.tru == 2 && nullCon.nul == 1){
+                        loss = nullCon.pos;
+                    }
+                }
+                if (win!=null){
+                    _field.fieldState()[win] = _shape;
+                    turn = !turn;
+                    return {turn}
+                } else if (loss!=null){
+                    _field.fieldState()[loss] = _shape;
+                    turn = !turn;
+                    return {turn}
+                }
             }
-            if (true){}
-
-
-
-            turn = !turn;
+            if (_field.fieldState()[4]==_shape){
+                if (_field.fieldState()[1]===null||_field.fieldState()[3]===null||_field.fieldState()[5]===null||_field.fieldState()[7]===null){
+                    let array = [];
+                    if (_field.fieldState()[1]===null) array.push(1);
+                    if (_field.fieldState()[3]===null) array.push(3);
+                    if (_field.fieldState()[5]===null) array.push(5);
+                    if (_field.fieldState()[7]===null) array.push(7);
+                    let position = array[Math.floor(Math.random()*array.length)];
+                    _field.fieldState()[position] = _shape;
+                    turn = !turn;
+                    return {turn}
+                } else {
+                    let array = [];
+                    if (_field.fieldState()[0]===null) array.push(0);
+                    if (_field.fieldState()[2]===null) array.push(2);
+                    if (_field.fieldState()[6]===null) array.push(6);
+                    if (_field.fieldState()[8]===null) array.push(8);
+                    let position = array[Math.floor(Math.random()*array.length)];
+                    _field.fieldState()[position] = _shape;
+                    turn = !turn;
+                    return {turn}
+                }
+            } else {
+                if (_field.fieldState()[0]===null||_field.fieldState()[2]===null||_field.fieldState()[6]===null||_field.fieldState()[8]===null){
+                    let array = [];
+                    if (_field.fieldState()[0]===null) array.push(0);
+                    if (_field.fieldState()[2]===null) array.push(2);
+                    if (_field.fieldState()[6]===null) array.push(6);
+                    if (_field.fieldState()[8]===null) array.push(8);
+                    let position = array[Math.floor(Math.random()*array.length)];
+                    _field.fieldState()[position] = _shape;
+                    turn = !turn;
+                    return {turn}
+                } else {
+                    let array = [];
+                    if (_field.fieldState()[1]===null) array.push(1);
+                    if (_field.fieldState()[3]===null) array.push(3);
+                    if (_field.fieldState()[5]===null) array.push(5);
+                    if (_field.fieldState()[7]===null) array.push(7);
+                    let position = array[Math.floor(Math.random()*array.length)];
+                    _field.fieldState()[position] = _shape;
+                    turn = !turn;
+                    return {turn}
+                }
+            }
         }
         turn = !turn;
         return {turn}
